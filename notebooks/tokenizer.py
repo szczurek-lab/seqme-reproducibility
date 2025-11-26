@@ -1,47 +1,16 @@
-"""SMILES tokenizer implementation compatible with HuggingFace transformers."""
-
 from __future__ import annotations
 
-import json
 import re
-from dataclasses import dataclass
-from pathlib import Path
 from typing import Any
 
 import torch
 
 SMILES_REGEX_PATTERN = r"""(\[[^\]]+\]|Br?|Cl?|N|O|S|P|F|I|b|c|n|o|s|p|\(|\)|\.|=|#|-|\+|\\|\/|:|~|@|\?|>>?|\*|\$|%[0-9]{2}|[0-9])"""
-DEFAULT_TOKENIZER_CONFIG_FILENAME = "tokenizer_config.json"
+DNA_REGEX_PATTERN = r"""A|T|G|C"""
 
 
-@dataclass
-class SMILESTokenizerConfig:
-    """SMILESTokenizer configuration."""
-
-    vocab_filepath: str
-    bos_token: str
-    eos_token: str
-    pad_token: str
-    unk_token: str | None = None
-    mask_token: str | None = None
-    task_tokens: dict[str, str] | None = None
-    additional_special_tokens: list[str] | None = None
-
-    @classmethod
-    def from_pretrained(
-        cls, pretrained_model_name_or_path: str | Path
-    ) -> SMILESTokenizerConfig:
-        """Load config from file or directory."""
-        config_path = Path(pretrained_model_name_or_path)
-        if config_path.is_dir():
-            config_path = config_path / DEFAULT_TOKENIZER_CONFIG_FILENAME
-        with config_path.open("r", encoding="utf-8") as f:
-            data = json.load(f)
-        return cls(**data)
-
-
-class SMILESTokenizer:
-    """SMILES regextokenizer compatible with HuggingFace transformers interface."""
+class Tokenizer:  # @TODO: rename Tokenizer
+    """regextokenizer compatible with HuggingFace transformers interface."""
 
     def __init__(
         self,
@@ -53,7 +22,7 @@ class SMILESTokenizer:
         mask_token: str | None = None,
         task_tokens: dict[str, str] | None = None,
         additional_special_tokens: list[str] | None = None,
-        regex_pattern: str = SMILES_REGEX_PATTERN,
+        regex_pattern: str = DNA_REGEX_PATTERN,
     ) -> None:
         self.vocab_filepath = vocab_filepath
         self.bos_token = bos_token
@@ -304,41 +273,3 @@ class SMILESTokenizer:
             self.decode(seq, skip_special_tokens=skip_special_tokens)
             for seq in sequences_list
         ]
-
-    @classmethod
-    def from_pretrained(
-        cls,
-        pretrained_model_name_or_path: str | Path,
-        **kwargs: Any,
-    ) -> SMILESTokenizer:
-        """Load tokenizer from config file.
-
-        Parameters
-        ----------
-        pretrained_model_name_or_path : str | Path
-            Path to directory containing tokenizer_config.json or path to config file.
-        **kwargs : Any
-            Optional overrides for config values (vocab_filepath, bos_token, etc.).
-
-        Returns
-        -------
-        SMILESTokenizer
-            Initialized tokenizer instance.
-        """
-        config = SMILESTokenizerConfig.from_pretrained(pretrained_model_name_or_path)
-        return cls(
-            vocab_filepath=kwargs.get("vocab_filepath", config.vocab_filepath),
-            bos_token=kwargs.get("bos_token", config.bos_token),
-            eos_token=kwargs.get("eos_token", config.eos_token),
-            pad_token=kwargs.get("pad_token", config.pad_token),
-            unk_token=kwargs.get("unk_token", config.unk_token),
-            mask_token=kwargs.get("mask_token", config.mask_token),
-            task_tokens=kwargs.get("task_tokens", config.task_tokens),
-            additional_special_tokens=kwargs.get(
-                "additional_special_tokens", config.additional_special_tokens
-            ),
-            regex_pattern=kwargs.get("regex_pattern", SMILES_REGEX_PATTERN),
-        )
-
-
-__all__ = ["SMILESTokenizer", "SMILESTokenizerConfig"]
