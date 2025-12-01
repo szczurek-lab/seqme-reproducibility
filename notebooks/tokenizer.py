@@ -7,10 +7,11 @@ import torch
 
 SMILES_REGEX_PATTERN = r"""(\[[^\]]+\]|Br?|Cl?|N|O|S|P|F|I|b|c|n|o|s|p|\(|\)|\.|=|#|-|\+|\\|\/|:|~|@|\?|>>?|\*|\$|%[0-9]{2}|[0-9])"""
 DNA_REGEX_PATTERN = r"""A|T|G|C"""
+AMINO_ACID_REGEX_PATTERN = r""""A|C|D|E|F|G|H|I|K|L|M|N|P|Q|R|S|T|V|W|Y"""
 
 
-class Tokenizer:  # @TODO: rename Tokenizer
-    """regextokenizer compatible with HuggingFace transformers interface."""
+class Tokenizer:
+    """Regex tokenizer compatible with HuggingFace transformers interface."""
 
     def __init__(
         self,
