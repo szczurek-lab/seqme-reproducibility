@@ -15,6 +15,7 @@ class Tokenizer:
 
     def __init__(
         self,
+        regex_pattern: str,
         vocab_filepath: str,
         bos_token: str,
         eos_token: str,
@@ -23,7 +24,6 @@ class Tokenizer:
         mask_token: str | None = None,
         task_tokens: dict[str, str] | None = None,
         additional_special_tokens: list[str] | None = None,
-        regex_pattern: str = DNA_REGEX_PATTERN,
     ) -> None:
         self.vocab_filepath = vocab_filepath
         self.bos_token = bos_token
