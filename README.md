@@ -2,6 +2,8 @@
 
 > Example use cases of [seqme](https://github.com/szczurek-lab/seqme)
 
+Data to run the case studies are found on [gdrive](https://drive.google.com/file/d/1Z_KKT8Qicm_p3CPNbW51l940FE2JHIhU/view). Place the downloaded FASTA files in the data directory.
+
 ## Citation
 
 If you use **seqme** in your research, consider citing our [publication](https://arxiv.org/abs/2511.04239):
