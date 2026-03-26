@@ -1,0 +1,38 @@
+[project]
+name = "seqme-reproducibility"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+    "ipykernel>=7.2.0",
+    "jupyterlab>=4.5.6",
+    "matplotlib>=3.10.8",
+    "seaborn>=0.13.2",
+    "tqdm>=4.67.3",
+]
+
+[project.optional-dependencies]
+case1 = [
+    "hyformer",
+    "seqme[hyformer, aa_descriptors, esm2]>=0.5.0",
+]
+case2 = [
+    "hyformer",
+    "seqme[hyformer_molecules]>=0.5.0",
+]
+case3 = [
+    "seqme[rnafm]>=0.5.0",
+]
+
+[tool.uv]
+conflicts = [
+    [
+        { extra = "case1" },
+        { extra = "case2" },
+    ],
+]
+
+[tool.uv.sources]
+hyformer = [
+    { git = "https://github.com/szczurek-lab/hyformer.git", rev = "v2.0", extra = "case1" },
+    { git = "https://github.com/szczurek-lab/hyformer.git", rev = "main", extra = "case2" },
+]
