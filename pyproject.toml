@@ -12,27 +12,13 @@ dependencies = [
 
 [project.optional-dependencies]
 case1 = [
-    "hyformer",
-    "seqme[hyformer, aa_descriptors, esm2]>=0.5.0",
+    "seqme[aa_descriptors, esm2]>=0.5.0",
 ]
 case2 = [
-    "hyformer",
-    "seqme[hyformer_molecules]>=0.5.0",
+    "datasets>=4.8.4",
+    "seqme[molecule_descriptors]>=0.5.0",
+    "transformers[torch]>=5.3.0",
 ]
 case3 = [
     "seqme[rnafm]>=0.5.0",
-]
-
-[tool.uv]
-conflicts = [
-    [
-        { extra = "case1" },
-        { extra = "case2" },
-    ],
-]
-
-[tool.uv.sources]
-hyformer = [
-    { git = "https://github.com/szczurek-lab/hyformer.git", rev = "v2.0", extra = "case1" },
-    { git = "https://github.com/szczurek-lab/hyformer.git", rev = "main", extra = "case2" },
 ]
