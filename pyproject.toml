@@ -17,10 +17,5 @@ case1 = [
     "seqme[aa_descriptors, esm2]>=0.5.0",
 ]
 case2 = [
-    "datasets>=4.8.4",
-    "seqme[molecule_descriptors]>=0.5.0",
-    "transformers[torch]>=5.3.0",
-]
-case3 = [
     "seqme[rnafm]>=0.5.0",
 ]
